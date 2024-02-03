@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LoginController;
+use App\Http\Requests\ContactRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware("logged.user")->group(function () {
     Route::get('/', fn () => (new ContactController)->index())->name("contacts");
+    Route::post('/contacts', fn (ContactRequest $request) => (new ContactController)->store($request));
+    Route::post('/contacts/{id}', fn (ContactRequest $request, $id) => (new ContactController)->update($request, $id));
+    Route::post('/contacts/{id}/delete', fn ($id) => (new ContactController)->delete($id));
 });
 
 Route::get("/login", fn () => (new LoginController)->index())->name("login");

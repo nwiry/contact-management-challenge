@@ -36,7 +36,7 @@ $(function () {
 });
 
 function validContactForm(name, contact, email, alertArea) {
-    if (name.val().trim().length < 5 || name.trim().length > 255) return alertArea.text("Please, enter a valid name").show();
+    if (name.val().trim().length < 5 || name.val().trim().length > 255) return alertArea.text("Please, enter a valid name").show();
     if (!contact.val().trim().length) return alertArea.text("The contact field is required").show();
     if (contact.val().trim().length != 9) return alertArea.text("The contact can only contain 9 digits").show();
     if (!email.val().trim().length) return alertArea.text("The email field is required").show();
@@ -57,26 +57,67 @@ function addContact() {
 
     if (validContactForm(name, contact, email, alertArea) !== null) return;
 
-    $.post("/api/contacts", {
-        name: name,
-        contact: contact,
-        email: email
+    $.post("/contacts", {
+        name: name.val(),
+        contact: contact.val(),
+        email: email.val(),
+        _token: CSRF_TOKEN,
     }, () => {
-
+        alert("Contact added successfully!");
+        window.location.reload();
     }).fail((err) => {
+        name.prop("disabled", 0);
+        contact.prop("disabled", 0);
+        email.prop("disabled", 0);
+        alertArea.text(err.responseJSON.message || "Unknown error").show();
+    });
+}
 
+
+function editContact() {
+    let name = $("#edit-contact-name"),
+        contact = $("#edit-contact-contact"),
+        email = $("#edit-contact-mail"),
+        alertArea = $(".alert-error-edit"),
+        contactId = $("#edit-contact-id").val();
+
+    if (validContactForm(name, contact, email, alertArea) !== null) return;
+
+    $.post("/contacts/" + contactId, {
+        name: name.val(),
+        contact: contact.val(),
+        email: email.val(),
+        _token: CSRF_TOKEN,
+    }, () => {
+        alert("Contact updated successfully!");
+        window.location.reload();
+    }).fail((err) => {
+        name.prop("disabled", 0);
+        contact.prop("disabled", 0);
+        email.prop("disabled", 0);
+        alertArea.text(err.responseJSON.message || "Unknown error").show();
     });
 }
 
 function editContactModal(e) {
+    let data = $(e).data();
 
+    $("#edit-contact-modal").modal("show");
+
+    $("#edit-contact-name").val(data.name);
+    $("#edit-contact-contact").val(data.contact);
+    $("#edit-contact-mail").val(data.email);
+    $("#edit-contact-id").val(data.id);
 }
 
 function deleteContact(e) {
     let data = $(e).data();
 
     if (confirm(`Are you sure you want to delete contact "${data.name}"? This action is irreversible and the data cannot be recovered!`)) {
-        $.post("/api/contact/" + data.id + "/delete", () => alert("Contact deleted successfully!") && window.location.reload())
-            .fail((err) => alert(err.responseJSON.message || "Unknown error"));
+        $.post("/contacts/" + data.id + "/delete", { _token: CSRF_TOKEN }, () => {
+            alert("Contact deleted successfully!");
+            window.location.reload();
+        }
+        ).fail((err) => alert(err.responseJSON.message || "Unknown error"));
     }
 }

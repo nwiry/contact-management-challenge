@@ -18,6 +18,7 @@ class ContactController extends Controller
     public function store(ContactRequest $request)
     {
         $contact          = new Contact;
+        $contact->user_id = $this::$user->id;
         $contact->name    = $request->name;
         $contact->contact = $request->contact;
         $contact->email   = $request->email;
@@ -36,6 +37,12 @@ class ContactController extends Controller
         $contact->email   = $request->email;
         $contact->save();
 
+        return Response::noContent();
+    }
+
+    public function delete($id)
+    {
+        Contact::where("user_id", $this::$user->id)->where("id", $id)->delete();
         return Response::noContent();
     }
 }
