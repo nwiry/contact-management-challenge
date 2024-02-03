@@ -148,5 +148,5 @@
 <script>
 const CSRF_TOKEN = "{{csrf_token()}}";
 </script>
-<script src="/app.js?v=0.1"></script>
+<script src="/app.js?v=1.0"></script>
 @endsection
