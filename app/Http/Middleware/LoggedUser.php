@@ -17,17 +17,18 @@ class LoggedUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
-
+        
         $session = $request->session()->get("user");
         if (!$session) return redirect()->route("login");
-
+        
         $user = User::where("id", $session)->first();
         if (!$user) {
             $request->session()->forget("user");
             return redirect()->route("login");
         }
-
+        
         Controller::$user = $user;
+
+        return $next($request);
     }
 }

@@ -12,7 +12,7 @@ class ContactController extends Controller
 {
     public function index()
     {
-        return Response::json(Contact::where("user_id", $this::$user->id));
+        return view("contacts", ["contact" => Contact::all()]);
     }
 
     public function store(ContactRequest $request)

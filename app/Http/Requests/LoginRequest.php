@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
 
-class ContactRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,8 @@ class ContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name"    => "required|min:5|max:60",
-            "contact" => "required|min:9|max:9",
-            "email"   => "required|email|max:255",
+            "email"    => "required|email",
+            "password" => "required",
         ];
     }
 

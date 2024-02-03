@@ -14,4 +14,5 @@ class Controller extends BaseController
      * @var \App\Models\User
      */
     public static $user;
+
 }

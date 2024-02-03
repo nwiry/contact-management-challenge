@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\LoginController;
+use App\Http\Requests\LoginRequest;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-Route::get('/', function () {
-    return view('contacts', ["contacts" => Contact::all()]);
+Route::middleware("logged.user")->group(function () {
+    Route::get('/', fn () => (new ContactController)->index())->name("contacts");
 });
+
+Route::get("/login", fn () => (new LoginController)->index())->name("login");
+Route::post("/login", fn (LoginRequest $request) => (new LoginController)->auth($request));
