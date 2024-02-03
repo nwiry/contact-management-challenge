@@ -15,10 +15,10 @@
                         <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" placeholder="yourmail@example.com" name="email" type="text" id="email">
+                                <input class="form-control" placeholder="yourmail@example.com" name="email" type="text" id="email" value="admin@admin.com" readonly>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="******" name="password" type="password" id="password">
+                                <input class="form-control" placeholder="******" name="password" type="password" id="password" value="admin" readonly>
                             </div>
                             <input class="btn btn-lg btn-success btn-block" type="submit" value="Login" id="btn-login">
                         </fieldset>
