@@ -34,8 +34,7 @@ class ContactRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            "message" => "failed validation",
-            "errors" => $validator->errors()
+            "message" => "- " . implode("<br />- ", $validator->errors()->toArray()),
         ], Response::HTTP_BAD_GATEWAY));
     }
 }
