@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignIdFor(User::class)->constrained();
             $table->string("name", 60)->collation("utf8mb4_general_ci");
-            $table->string("contact", 20)->unique();
+            $table->string("contact", 9)->unique();
             $table->string("email", 255)->collation("utf8mb4_general_ci")->unique();
         });
     }
